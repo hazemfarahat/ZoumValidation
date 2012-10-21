@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="VALID_EMAIL">[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}\\@[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}(\\.[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25})+</string>
+    <string name="VALID_INTEGER">[0-9]+</string>
+    <string name="VALID_ALPHABET">[a-zA-Z]+</string>
+    <string name="VALID_ALPHANUMERIC">[a-zA-Z0-9]+</string>
+    <string name="VALID_HEXCOLOR">^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$</string>
+    <string name="VALID_URL">^(https?|ftp)://.+\\..+$</string>
+    <string name="VALID_NOT_BLANK">.+</string>
+</resources>
