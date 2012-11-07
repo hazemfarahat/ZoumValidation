@@ -40,7 +40,7 @@ public class ValidationEditText extends EditText {
         /** Criteria: input only contains letters (upper-case or lower-case A-z and implies not empty) */
         ALPHABET(4, "[a-zA-Z]+"),
         /** Criteria: input only contains numbers (0-9 and implies not empty) */
-        NUMBER(5, "[0-9]+),
+        NUMBER(5, "[0-9]+"),
         /** Criteria: input has approximately valid e-mail address syntax */
         EMAIL(6, "[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@" + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}" + "(" + "\\." 
                + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}" + ")+");
