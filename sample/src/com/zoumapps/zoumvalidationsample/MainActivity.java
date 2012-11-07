@@ -1,6 +1,6 @@
 package com.zoumapps.zoumvalidationsample;
 
-import com.zoumapps.validation.ValidationEditText;
+import com.zoumapps.validation.ValidationEditText.Validation;
 
 import android.os.Bundle;
 import android.app.Activity;
@@ -22,14 +22,13 @@ public class MainActivity extends Activity {
 		mValidationEditText3 = (ValidationEditText) findViewById(R.id.edittext_validate3);
 
 		// Set validation criteria as it's not set on XML
-		mValidationEditText
-				.setValidationCriteria(ValidationEditText.VALID_NOT_BLANK);
+		mValidationEditText.setValidationCriteria(Validation.NOT_EMPTY);
 	}
 
 	public void onButtonValidateClicked(View v) {
-		mValidationEditText.validate();
-		mValidationEditText2.validate();
-		mValidationEditText3.validate();
+		mValidationEditText.showValidity();
+		mValidationEditText2.vshowValidity();
+		mValidationEditText3.showValidity();
 
 	}
 
