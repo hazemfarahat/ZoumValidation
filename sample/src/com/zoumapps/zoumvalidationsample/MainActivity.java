@@ -22,7 +22,7 @@ public class MainActivity extends Activity {
 		mValidationEditText3 = (ValidationEditText) findViewById(R.id.edittext_validate3);
 
 		// Set validation criteria as it's not set on XML
-		mValidationEditText.setValidationCriteria(Validation.NOT_EMPTY);
+		mValidationEditText.setValidation(Validation.NOT_EMPTY);
 	}
 
 	public void onButtonValidateClicked(View v) {
