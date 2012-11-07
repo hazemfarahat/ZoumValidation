@@ -99,7 +99,7 @@ public class ValidationEditText extends EditText {
      * @param validation a predefined validation
      * @see Validation
      */
-    public void setValidationCriteria(Validation validation) {
+    public void setValidation(Validation validation) {
         // This maintains that the input field is never in a state where it can't validate its input
         if (validation != null)
             setMatcherCriteria(validation._criteria);
