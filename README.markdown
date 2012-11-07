@@ -1,55 +1,77 @@
 Zoum Validation
 ================
 
-Zoum validation is a standalone library designed to offer a new custom EditText that is validatable, the EditText shakes if its contents is invalid.
+Zoum validation is a standalone library designed to offer a new custom EditText that is validatable, the EditText animates (default is a shake) if its contents is invalid.
 
-Validation occours using regular expressions, and for your convenience the library contains some constant validation criteria types:
+Validation occurs using regular expressions, and for your convenience the library provides some validation methods:
 
-* VALID_EMAIL
+* EMAIL
 Validate emails, someone@domain.topdomain
 
-* VALID_INTEGER
+* NUMBER
 Validate any integer number
 
-* VALID_ALPHABET
+* ALPHABET
 Accepts alphabetical charcteres from A - Z and from a - z
 
-* VALID_ALPHANUMERIC
+* ALPHANUMERIC
 Validates alphabet and numbers
 
-* VALID_HEXCOLOR
-Validates Hexadecimal colors starting with #, ex. #66EEAB
+* HEXIDECIMAL_COLOR
+Validates Hexadecimal colors starting with #, ex. #66EEAB or #777
 
-* VALID_URL
-Validates any url starting with http or ftp
+* URL
+Validates any URL starting with http, https, or ftp
 
-* VALID_NOT_BLANK
-Checks if the field is not blank
+* NON_EMPTY
+Accepts any non-empty input
 	
 Usage
 =====
 
-Using the validation criteria can be done in two ways  
+The validation criteria can be done in two ways  
 
 ### Programatically:  
-By calling the `setValidationCriteria(String arg)` with a regex string or one of the validation constants mentioned above.
+By calling the `setValidationCriteria(String validation_criteria)` with a regular expression. Or by calling the 
+`setValidation(Validation validation)` with a predefined validation method.
 
-EX: `myValidationEditText.setValidationCriteria(ValidationEditText.VALID_EMAIL);`
+EX: `myValidationEditText.setValidationCriteria("^[0-9]*(1|3|5|7|9)$");` or 
+`myValidationEditText.setValidation(Validation.EMAIL);`
 
 ### From XML:  
-The criteria can be also set from the xml layout file but make sure to include the library namespace at your xml
+The criteria can be also set from the XML layout file, but requires the library namespace at your XML is included
 
-at the top node add:  `xmlns:zoum="http://schemas.android.com/apk/res-auto"`
+at the top node:  `xmlns:zoum="http://schemas.android.com/apk/res-auto"`.
 
-and then use this in your layout, note the `zoum:validation_criteria` attribute.  
+Then use this in your layout, note the `zoum:custom_criteria` attribute.  
 
-		<com.zoumapps.validation.ValidationEditText
+    <com.zoumapps.validation.ValidationEditText
         android:id="@+id/edittext_validate2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:padding="8dp"
-        zoum:validation_criteria="@string/VALID_EMAIL" />
+        zoum:custom_criteria="^[0-9]*(1|3|5|7|9)$" />
+
+The validation method came be set similarly in the XML layout file, using the `zoum:validation` attribute.
+
+    <com.zoumapps.validation.ValidationEditText
+        android:id="@+id/edittext_validate2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:padding="8dp"
+        zoum:validation="email" />
+
+The invalid input animation can also be set in the XML layout file, using the `zoum:invalid_input_indicator` attribute.
+
+    <com.zoumapps.validation.ValidationEditText
+        android:id="@+id/edittext_validate2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:padding="8dp"
+        zoum:invalid_input_indicator="@anim/my_custom_animation" />
 
 Project contents
 ================
