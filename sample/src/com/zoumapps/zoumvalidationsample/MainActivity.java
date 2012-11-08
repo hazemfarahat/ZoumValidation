@@ -1,5 +1,6 @@
 package com.zoumapps.zoumvalidationsample;
 
+import com.zoumapps.validation.ValidationEditText;
 import com.zoumapps.validation.ValidationEditText.Validation;
 
 import android.os.Bundle;
@@ -27,7 +28,7 @@ public class MainActivity extends Activity {
 
 	public void onButtonValidateClicked(View v) {
 		mValidationEditText.showValidity();
-		mValidationEditText2.vshowValidity();
+		mValidationEditText2.showValidity();
 		mValidationEditText3.showValidity();
 
 	}

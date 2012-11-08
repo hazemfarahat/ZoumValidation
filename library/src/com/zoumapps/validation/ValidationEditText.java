@@ -6,7 +6,6 @@ import android.util.AttributeSet;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import com.keepandshare.android.R;
 
 import java.util.EnumSet;
 import java.util.regex.Matcher;
@@ -17,7 +16,7 @@ import java.util.regex.Pattern;
  * animation.
  *
  * To set a validation criteria either call {@link #setValidationCriteria(String)} to set a regular expression to
- * validate against, or {@link #setValidationCriteria(com.zoumappds.validation.ValidationEditText.Validation)} to use
+ * validate against, or {@link #setValidationCriteria(com.zoumapps.validation.ValidationEditText.Validation)} to use
  * a predefined validation, or set the XML attribute {@code zoum:validation_criteria="criteria"}, this requires adding
  * {@code xmlns:zoum="http://schemas.android.com/apk/res/com.zoumapps.validation"} to the XML main tag.
  *
@@ -33,7 +32,7 @@ public class ValidationEditText extends EditText {
         NON_EMPTY(0, ".+"),
         /** Criteria: input has approximately valid URL syntax. Only accepts URLs starting with http, https, or ftp */
         URL(1, "^(https?|ftp)://.+\\..+$"),
-        /** Criteria: input is a #-sign followed by 3 or 6 hexidecimal digits (0-9, a-f, and A-F are the valid digits) */
+        /** Criteria: input is a #-sign followed by 3 or 6 hexadecimal digits (0-9, a-f, and A-F are the valid digits) */
         HEXIDECIMAL_COLOR(2, "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"),
         /** Criteria: input only contains letters (upper-case or lower-case A-z) and numbers (0-9), implies not empty */
         ALPHANUMERIC(3, "[a-zA-Z0-9]+"),
