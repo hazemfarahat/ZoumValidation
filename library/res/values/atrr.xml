@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="ValidationEditText">
-        <attr name="validation_criteria" format="string" />
+    <declare-styleable name="ValidatedEditText">
+        <!-- Each criteria corresponds to a criteria in ValidationEditText.java -->
+        <attr name="validation" format="enum">
+            <enum name="non_empty" value="0" />
+            <enum name="url" value="1" />
+            <enum name="hexidecimal_color" value="2" />
+            <enum name="alphanumeric" value="3" />
+            <enum name="alphabet" value="4" />
+            <enum name="number" value="5" />
+            <enum name="email" value="6" />
+        </attr>
+        <attr name="custom_criteria" format="string"/>
+        <attr name="invalid_input_indicator" format="reference" />
     </declare-styleable>
 </resources>
