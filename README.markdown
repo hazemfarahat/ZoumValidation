@@ -29,23 +29,22 @@ Accepts any non-empty input
 Usage
 =====
 
-The validation criteria can be done in two ways  
-
+## Validation criteria  
 ### Programatically:  
 By calling the `setValidationCriteria(String validation_criteria)` with a regular expression. Or by calling the 
 `setValidation(Validation validation)` with a predefined validation method.
 
-EX: `myValidationEditText.setValidationCriteria("^[0-9]*(1|3|5|7|9)$");` or 
-`myValidationEditText.setValidation(Validation.EMAIL);`
+EX: `myValidatedEditText.setValidationCriteria("^[0-9]*(1|3|5|7|9)$");` or 
+`myValidatedEditText.setValidation(Validation.EMAIL);`
 
 ### From XML:  
 The criteria can be also set from the XML layout file, but requires the library namespace at your XML is included
 
-at the top node:  `xmlns:zoum="http://schemas.android.com/apk/res-auto"`.
+at the top node: `xmlns:zoum="http://schemas.android.com/apk/res-auto"`.
 
 Then use this in your layout, note the `zoum:custom_criteria` attribute.  
 
-    <com.zoumapps.validation.ValidationEditText
+    <com.zoumapps.validated.ValidationEditText
         android:id="@+id/edittext_validate2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,25 +52,24 @@ Then use this in your layout, note the `zoum:custom_criteria` attribute.
         android:padding="8dp"
         zoum:custom_criteria="^[0-9]*(1|3|5|7|9)$" />
 
-The validation method came be set similarly in the XML layout file, using the `zoum:validation` attribute.
+## Invalid Input Indicator
+### Programatically:
+By calling the `setInvalidInputIndicator(Animation animation)`. Or by calling the 
+`setInvalidInputIndicator(int animation_resource)` with the ID to an animation resource.
 
-    <com.zoumapps.validation.ValidationEditText
-        android:id="@+id/edittext_validate2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:padding="8dp"
-        zoum:validation="email" />
-
+### From XML:
 The invalid input animation can also be set in the XML layout file, using the `zoum:invalid_input_indicator` attribute.
 
-    <com.zoumapps.validation.ValidationEditText
+    <com.zoumapps.validated.ValidationEditText
         android:id="@+id/edittext_validate2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:padding="8dp"
         zoum:invalid_input_indicator="@anim/my_custom_animation" />
+
+## Sanitization
+Provides callback to automatically sanitize input text when the user navigates away from the field. Implement `ValidatedEditText.OnFixTextListener`'s `onFixText(CharSequence)` to return a sanitized version of the given text. Then set this listener with `myValidatedEditText.setOnFixTextListener(myOnFixTextListener)`.
 
 Project contents
 ================
