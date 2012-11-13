@@ -27,7 +27,7 @@ import java.util.Patterns;
  * @author Hazem Farahat <Hazem.farahat@gmail.com>
  * @author Dandré Allison <dandre.allison@gmail.com>
  */
-public class ValidationEditText extends EditText {
+public class ValidatedEditText extends EditText {
 	
 	/**
      * Callback interface that provides an opportunity to sanitize invalid input. This callback will be triggered when
@@ -85,19 +85,19 @@ public class ValidationEditText extends EditText {
     }
 
     /** Constructor */
-    public ValidationEditText(Context context) {
+    public ValidatedEditText(Context context) {
         this(context, null);
     }
 
     /** Constructor */
-    public ValidationEditText(Context context, AttributeSet attrs) {
+    public ValidatedEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context, attrs);
     }
 
     /** Constructor */
-    public ValidationEditText(Context context, AttributeSet attrs, int defStyle) {
+    public ValidatedEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         init(context, attrs);

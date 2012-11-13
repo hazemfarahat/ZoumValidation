@@ -2,20 +2,21 @@ package com.zoumapps.validation;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.EditText;
+import android.widget.AutoCompleteTextView;
 import com.zoumapps.validation.R;
 
-import java.util.EnumSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Patterns;
 
 /**
- * <p>An {@link EditText} that can validate its input and indicate to the user when the input is invalid through an
- * animation.</p>
+ * <p>An {@link android.widget.AutoCompleteTextView} that can validate its input and indicate to the user when the input is invalid through an
+ * animation. It shows completion suggestions automatically while the user is typing. The list of suggestions is displayed in a drop
+ * down menu from which the user can choose an item to replace the content of the edit box with.</p>
  *
  * <p>To set a validation criteria either call {@link #setValidationCriteria(String)} to set a regular expression to
  * validate against, or {@link #setValidation} to use
@@ -24,80 +25,24 @@ import java.util.Patterns;
  *
  * <p>To sanitize invalid input implement the {@link com.zoumapps.validation.ValidatedEditText.OnFixTextListener} interface and set the
  * listener with {@link #setOnFixTextListener(com.zoumapps.validation.ValidatedEditText.OnFixTextListener)}.</p>
- * @author Hazem Farahat <Hazem.farahat@gmail.com>
- * @author Dandré Allison <dandre.allison@gmail.com>
+ *
+ * @author Dandré Allison
  */
-public class ValidationEditText extends EditText {
-	
-	/**
-     * Callback interface that provides an opportunity to sanitize invalid input. This callback will be triggered when
-     * the user navigates away from this field.
-     */
-    public interface OnFixTextListener {
-        /**
-         * Corrects the specified text to make it valid. This allows the listener to sanitize invalid input.
-         * @param invalid_text A string that doesn't pass validation
-         * @return Sanitized text based on the given text
-         */
-        CharSequence onFixText(CharSequence invalid_text);
-    }
-
-    /**
-     * Predefined validation criterion.
-     */
-    public static enum Validation {
-        /** Criteria: input is not empty */
-        NON_EMPTY(0, ".+"),
-        /** Criteria: input has valid URL syntax. */
-        URL(1, Patterns.WEB_URL.pattern()),
-        /** Criteria: input is a #-sign followed by 3 or 6 hexadecimal digits (0-9, a-f, and A-F are the valid digits) */
-        HEXIDECIMAL_COLOR(2, "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"),
-        /** Criteria: input only contains letters (upper-case or lower-case A-z) and numbers (0-9), implies not empty */
-        ALPHANUMERIC(3, "[a-zA-Z0-9]+"),
-        /** Criteria: input only contains letters (upper-case or lower-case A-z and implies not empty) */
-        ALPHABET(4, "[a-zA-Z]+"),
-        /** Criteria: input only contains numbers (0-9 and implies not empty) */
-        NUMBER(5, "[0-9]+"),
-        /** Criteria: input has valid e-mail address syntax */
-        EMAIL(6, Patterns.EMAIL_ADDRESS.pattern());
-
-        private Validation(int value, String criteria) {
-            _value = value;
-            _criteria = criteria;
-        }
-
-        /**
-         * Creates the criteria for valid input given a value.
-         * @param from_value value associated with a {@link Validation}
-         * @return the criteria for passing the associated validation
-         */
-        public static String getCriteria(int from_value) {
-            for(Validation validation : EnumSet.allOf(Validation.class))
-                if (validation._value == from_value)
-                    return validation._criteria;
-
-            throw new IllegalArgumentException(from_value + " is not a valid Validation.");
-        }
-
-        // These aren't private to allow ValidatedEditText to access them directly
-        final int _value;
-        final String _criteria;
-    }
-
+public class ValidatedAutoCompleteEditText extends AutoCompleteTextView {
     /** Constructor */
-    public ValidationEditText(Context context) {
+    public ValidatedAutoCompleteEditText(Context context) {
         this(context, null);
     }
 
     /** Constructor */
-    public ValidationEditText(Context context, AttributeSet attrs) {
+    public ValidatedAutoCompleteEditText(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         init(context, attrs);
     }
 
     /** Constructor */
-    public ValidationEditText(Context context, AttributeSet attrs, int defStyle) {
+    public ValidatedAutoCompleteEditText(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
 
         init(context, attrs);
@@ -110,11 +55,11 @@ public class ValidationEditText extends EditText {
         _should_revalidate = true;
     }
 
-	@Override
-	protected void onFocusChanged(boolean focused, int direction, Rect previously_focused_rect) {
+    @Override
+    protected void onFocusChanged(boolean focused, int direction, Rect previously_focused_rect) {
         super.onFocusChanged(focused, direction, previously_focused_rect);
         // Performs validation if the view loses focus
-        if (!focused && !validate() && _on_fix_text_listener != null)
+        if (focused && !validate() && _on_fix_text_listener != null)
             setText(_on_fix_text_listener.onFixText(getText()))
     }
 
@@ -130,22 +75,40 @@ public class ValidationEditText extends EditText {
         return super.onKeyDown(key_code, event);
     }
 
+    @Deprecated
+    @Override
+    public void setValidator(Validator validator) {
+        super.setValidator(validator);
+    }
+
+    @Deprecated
+    @Override
+    public Validator getValidator() {
+        return super.getValidator();
+    }
+
+    @Deprecated
+    @Override
+    public void performValidation() {
+        super.performValidation();
+    }
+
     /**
      * Sets the validation to a predefined method.
      * @param validation a predefined validation
-     * @see Validation
+     * @see com.keepandshare.android.ui.ValidatedEditText.Validation
      */
-    public void setValidation(Validation validation) {
+    public void setValidation(ValidatedEditText.Validation validation) {
         // This maintains that the input field is never in a state where it can't validate its input
         if (validation != null)
             setMatcherCriteria(validation._criteria);
         else
-            setMatcherCriteria(Validation.NON_EMPTY._criteria);
+            setMatcherCriteria(ValidatedEditText.Validation.NON_EMPTY._criteria);
         _should_revalidate = true;
     }
 
     /**
-     * Sets the criteria the text in the {@linkplain EditText input field} must meet to be valid.
+     * Sets the criteria the text in the {@linkplain android.widget.EditText input field} must meet to be valid.
      * @param validation_criteria the regular expression to match against
      */
     public void setValidationCriteria(String validation_criteria) {
@@ -174,8 +137,8 @@ public class ValidationEditText extends EditText {
         return validate();
     }
 
-	/**
-	 * Sets the invalid input animation that shows when the user enters invalid input.
+    /**
+     * Sets the invalid input animation that shows when the user enters invalid input.
      * @param animation the invalid input animation
      */
     public void setInvalidInputIndicator(Animation animation) {
@@ -190,12 +153,12 @@ public class ValidationEditText extends EditText {
         _invalid_input_indicator = AnimationUtils.loadAnimation(getContext(), animation_resource);
     }
 
-    public void setOnFixTextListener(OnFixTextListener on_fix_text_listener) {
+    public void setOnFixTextListener(ValidatedEditText.OnFixTextListener on_fix_text_listener) {
         _on_fix_text_listener = on_fix_text_listener;
     }
 
     /**
-     * Initializes the validation decoration to the {@link EditText}. After initialization, the input field can validate
+     * Initializes the validation decoration to the {@link android.widget.EditText}. After initialization, the input field can validate
      * its input and indicate when the input is invalid.
      * @param context the given context
      * @param attributes the input field's attributes
@@ -204,8 +167,8 @@ public class ValidationEditText extends EditText {
         if (attributes != null) {
             final TypedArray a = getContext().obtainStyledAttributes(attributes, R.styleable.ValidatedEditText);
             // Sets the criteria based on the validation method chosen in XML
-            setMatcherCriteria(Validation.getCriteria(a.getInt(R.styleable.ValidatedEditText_validation,
-                    Validation.NON_EMPTY._value)));
+            setMatcherCriteria(ValidatedEditText.Validation.getCriteria(a.getInt(R.styleable.ValidatedEditText_validation,
+                    ValidatedEditText.Validation.NON_EMPTY._value)));
             // Sets the criteria based on the custom criteria specified in XML
             // Notice that this will override a validation method chosen in XML
             final String criteria = a.getString(R.styleable.ValidatedEditText_custom_criteria);
@@ -217,7 +180,7 @@ public class ValidationEditText extends EditText {
             _invalid_input_indicator = AnimationUtils.loadAnimation(context, invalid_input_indicator);
             a.recycle();
         } else {
-            setMatcherCriteria(Validation.NON_EMPTY._criteria);
+            setMatcherCriteria(ValidatedEditText.Validation.NON_EMPTY._criteria);
             _invalid_input_indicator = AnimationUtils.loadAnimation(context, R.anim.shake);
         }
     }
@@ -228,23 +191,23 @@ public class ValidationEditText extends EditText {
      */
     private boolean validate() {
         final boolean is_valid = _should_revalidate
-                                    ? _criteria.reset(getText().toString()).matches()
-                                    : _criteria.matches();
+                ? _criteria.reset(getText().toString()).matches()
+                : _criteria.matches();
         _should_revalidate = false;
         return is_valid;
     }
 
     /**
-     * Sets the {@link Matcher} criteria to the given {@link String}
+     * Sets the {@link java.util.regex.Matcher} criteria to the given {@link String}
      * @param string the regular expression to match against
      */
     private void setMatcherCriteria(String string) {
         // This maintains that the input field is never in a state where it can't validate its input
-        _criteria = _criteria.usePattern(Pattern.compile(string == null? "" : string));
+        _criteria = _criteria.usePattern(Pattern.compile(string == null ? "" : string));
     }
 
     /**
-     * Animates the {@linkplain EditText input field} to indicate that the input is invalid.
+     * Animates the {@linkplain android.widget.EditText input field} to indicate that the input is invalid.
      */
     private void indicateInvalidInput() {
         requestFocus();
@@ -257,6 +220,6 @@ public class ValidationEditText extends EditText {
     private Animation _invalid_input_indicator;
     /** Monitors whether the text validation needs to be performed */
     private boolean _should_revalidate = true;
-	/** Handles sanitizing invalid input */
-	private OnFixTextListener _on_fix_text_listener;
+    /** Handles sanitizing invalid input */
+    private ValidatedEditText.OnFixTextListener _on_fix_text_listener;
 }
